@@ -44,5 +44,13 @@ private:
 	/*  User Variables              */
 	int x = 400;
 	int y = 300;
+	int vx = 0;
+	int vy = 0;
+	int gb = 255;
+	bool shapeIsChanged = false;
+	bool inhibitUp = false;
+	bool inhibitDown = false;
+	bool inhibitLeft = false;
+	bool inhibitRight = false;
 	/********************************/
 };

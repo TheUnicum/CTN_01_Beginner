@@ -46,16 +46,16 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	int x_fixed0 = 200;
+	int x_fixed0 = 700;
 	int y_fixed0 = 200;
-	int x_fixed1 = 210;
+	int x_fixed1 = 215;
 	int y_fixed1 = 200;
-	int x_fixed2 = 215;
-	int y_fixed2 = 200;
+	int x_fixed2 = 200;
+	int y_fixed2 = 220;
 	int x_fixed3 = 230;
-	int y_fixed3 = 200;
-	int x_mobile = 400;
-	int y_mobile = 400;
+	int y_fixed3 = 220;
+	int x_mobile = 700;
+	int y_mobile = 200;
 	bool colliding = false;
 	/********************************/
 };

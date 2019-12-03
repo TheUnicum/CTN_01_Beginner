@@ -58,6 +58,9 @@ void Game::UpdateModel()
 		y_mobile = y_mobile - 1;
 	}
 
+	x_mobile = ClampScreenX(x_mobile);
+	y_mobile = ClampScreenY(y_mobile);
+
 	colliding =
 		OverlapTest(x_fixed0, y_fixed0, x_mobile, y_mobile) ||
 		OverlapTest(x_fixed1, y_fixed1, x_mobile, y_mobile) ||
@@ -118,8 +121,45 @@ bool Game::OverlapTest(int box0x, int box0y, int box1x, int box1y)
 	const int top_box1 = box1y - 5;
 	const int bottom_box1 = box1y + 5;
 
-	return left_box0 <= right_box1 &&
+	return
+		left_box0 <= right_box1 &&
 		right_box0 >= left_box1 &&
 		top_box0 <= bottom_box1 &&
 		bottom_box0 >= top_box1;
+}
+
+int Game::ClampScreenX(int x)
+{
+	const int left = x - 5;
+	const int right = x + 5;
+	if (left < 0)
+	{
+		return 5;
+	}
+	else if (right >= gfx.ScreenWidth)
+	{
+		return (gfx.ScreenWidth - 1) - 5;
+	}
+	else
+	{
+		return x;
+	}
+}
+
+int Game::ClampScreenY(int y)
+{
+	const int top = y - 5;
+	const int bottom = y + 5;
+	if (top < 0)
+	{
+		return 5;
+	}
+	else if (bottom >= gfx.ScreenHeight)
+	{
+		return (gfx.ScreenHeight - 1) - 5;
+	}
+	else
+	{
+		return y;
+	}
 }

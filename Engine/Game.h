@@ -24,6 +24,7 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "Poo.h"
+#include "Dude.h"
 
 class Game
 {
@@ -41,20 +42,13 @@ private:
 	void DrawPoo(int x, int y);
 	void DrawGameOver(int x, int y);
 	void DrawTileScreen(int x, int y);
-	int ClampScreenX(int x, int width);
-	int ClampScreenY(int y, int height);
-	bool IsColliding(int x0, int y0, int width0, int height0,
-		int x1, int y1, int width1, int height1);
 	/********************************/
 private:
 	MainWindow& wnd;
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	int dudeX = 400;
-	int dudeY = 300;
-	int dudeWidth = 20;
-	int dudeHeight = 20;
+	Dude dude;
 	Poo poo0;
 	Poo poo1;
 	Poo poo2;

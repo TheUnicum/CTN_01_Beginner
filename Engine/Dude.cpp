@@ -343,3 +343,43 @@ void Dude::ClampToScreen()
 		x = (Graphics::ScreenHeight - 1) - height;
 	}
 }
+
+void Dude::Update(const Keyboard& kbd)
+{
+	if (kbd.KeyIsPressed(VK_RIGHT))
+	{
+		x += speed;
+	}
+	if (kbd.KeyIsPressed(VK_LEFT))
+	{
+		x -= speed;
+	}
+	if (kbd.KeyIsPressed(VK_DOWN))
+	{
+		y += speed;
+	}
+	if (kbd.KeyIsPressed(VK_UP))
+	{
+		y -= speed;
+	}
+}
+
+int Dude::GetX() const
+{
+	return x;
+}
+
+int Dude::GetY() const
+{
+	return y;
+}
+
+int Dude::GetWidth() const
+{
+	return width;
+}
+
+int Dude::GetHeight() const
+{
+	return height;
+}

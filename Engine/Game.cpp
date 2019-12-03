@@ -31,7 +31,13 @@ Game::Game(MainWindow& wnd)
 	yDist(0, 570),
 	poo0(xDist(rng), yDist(rng), 1, 1),
 	poo1(xDist(rng), yDist(rng), -1, 1),
-	poo2(xDist(rng), yDist(rng), 1, -1)
+	poo2(xDist(rng), yDist(rng), 1, -1),
+	poo3(xDist(rng), yDist(rng), -1, -1),
+	poo4(xDist(rng), yDist(rng), -1, 1),
+	poo5(xDist(rng), yDist(rng), 1, -1),
+	poo6(xDist(rng), yDist(rng), 1, 1),
+	poo7(xDist(rng), yDist(rng), -1, 1),
+	poo8(xDist(rng), yDist(rng), 1, -1)
 {
 }
 
@@ -47,32 +53,28 @@ void Game::UpdateModel()
 {
 	if (isStarted)
 	{
-		if (wnd.kbd.KeyIsPressed(VK_RIGHT))
-		{
-			dude.x += 1;
-		}
-		if (wnd.kbd.KeyIsPressed(VK_LEFT))
-		{
-			dude.x -= 1;
-		}
-		if (wnd.kbd.KeyIsPressed(VK_DOWN))
-		{
-			dude.y += 1;
-		}
-		if (wnd.kbd.KeyIsPressed(VK_UP))
-		{
-			dude.y -= 1;
-		}
-
+		dude.Update(wnd.kbd);
 		dude.ClampToScreen();
 		
 		poo0.Update();
 		poo1.Update();
 		poo2.Update();
+		poo3.Update();
+		poo4.Update();
+		poo5.Update();
+		poo6.Update();
+		poo7.Update();
+		poo8.Update();
 
 		poo0.ProcessConsumprion(dude);
 		poo1.ProcessConsumprion(dude);
 		poo2.ProcessConsumprion(dude);
+		poo3.ProcessConsumprion(dude);
+		poo4.ProcessConsumprion(dude);
+		poo5.ProcessConsumprion(dude);
+		poo6.ProcessConsumprion(dude);
+		poo7.ProcessConsumprion(dude);
+		poo8.ProcessConsumprion(dude);
 	}
 	else
 	{
@@ -28437,7 +28439,9 @@ void Game::ComposeFrame()
 	}
 	else 
 	{
-		if (poo0.IsEaten() && poo1.IsEaten() && poo2.IsEaten())
+		if (poo0.IsEaten() && poo1.IsEaten() && poo2.IsEaten() &&
+			poo3.IsEaten() && poo4.IsEaten() && poo5.IsEaten() &&
+			poo6.IsEaten() && poo7.IsEaten() && poo8.IsEaten() )
 		{
 			DrawGameOver(358, 268);
 		}
@@ -28453,6 +28457,30 @@ void Game::ComposeFrame()
 		if (!poo2.IsEaten())
 		{
 			poo2.Draw(gfx);
+		}
+		if (!poo3.IsEaten())
+		{
+			poo3.Draw(gfx);
+		}
+		if (!poo4.IsEaten())
+		{
+			poo4.Draw(gfx);
+		}
+		if (!poo5.IsEaten())
+		{
+			poo5.Draw(gfx);
+		}
+		if (!poo6.IsEaten())
+		{
+			poo6.Draw(gfx);
+		}
+		if (!poo7.IsEaten())
+		{
+			poo7.Draw(gfx);
+		}
+		if (!poo8.IsEaten())
+		{
+			poo8.Draw(gfx);
 		}
 	}
 }

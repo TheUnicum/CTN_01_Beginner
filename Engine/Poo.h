@@ -1,10 +1,14 @@
 #pragma once
 
+#include "Graphics.h"
+#include "Dude.h"
+
 class Poo
 {
 public:
 	void Update();
-	void ProcessConsumprion(int dudex, int dudey, int dudewidth, int dudeheight);
+	void ProcessConsumprion(const Dude& dude);
+	void Draw(Graphics& gfx) const;
 	int x;
 	int y;
 	int vx;

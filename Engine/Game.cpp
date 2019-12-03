@@ -20,6 +20,7 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include <random>
 
 Game::Game( MainWindow& wnd )
 	:
@@ -42,4 +43,27 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
+	std::mt19937 rng(69);
+	std::uniform_int_distribution<int> dist(0, 420);
+
+	int n0 = dist(rng);
+	int n1 = dist(rng);
+	int n2 = dist(rng);
+
+	int result = (n0 + n1 + n2) / 3;
+
+	constexpr int size = 30;
+
+	int n[size];
+	for (int i = 0; i < size; i++)
+	{
+		n[i] = dist(rng);
+	}
+
+	int sum = 0;
+	for (int i = 0; i < size; i++)
+	{
+		sum += n[i];
+	}
+	int result2 = sum / size;
 }

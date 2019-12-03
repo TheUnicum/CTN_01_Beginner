@@ -65,4 +65,5 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	gfx.DrawRec(x0, y0, x1, y1, Colors::Magenta);
+	gfx.DrawRecD(10, 10, 50, 50, Colors::Red);
 }

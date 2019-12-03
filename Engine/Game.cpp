@@ -28,7 +28,9 @@ Game::Game(MainWindow& wnd)
 	gfx(wnd),
 	rng(rd()),
 	xDist(0, 770),
-	yDist(0, 570)
+	yDist(0, 570),
+	goal(xDist(rng), yDist(rng)),
+	meter(20, 20)
 {
 	std::uniform_int_distribution<int> vDist(-1, 1);
 	for (int i = 0; i < nPoo; i++)
@@ -47,7 +49,8 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	if (isStarted)
+	goal.UpdateColor();
+	if (isStarted && !isGameOver)
 	{
 		dude.Update(wnd.kbd);
 		dude.ClampToScreen();
@@ -55,7 +58,16 @@ void Game::UpdateModel()
 		for (int i = 0; i < nPoo; ++i)
 		{
 			poos[i].Update();
-			poos[i].ProcessConsumprion(dude);
+			if (poos[i].TestCollision(dude))
+			{
+				isGameOver = true;
+			}
+		}
+
+		if (goal.TestCollision(dude))
+		{
+			goal.Respawn(xDist(rng), yDist(rng));
+			meter.IncreaseLevel();
 		}
 	}
 	else
@@ -28421,24 +28433,16 @@ void Game::ComposeFrame()
 	}
 	else 
 	{
-		bool allEaten = true;
+		goal.Draw(gfx);
 		for (int i = 0; i < nPoo; ++i)
 		{
-			allEaten = allEaten && poos[i].IsEaten();
+			poos[i].Draw(gfx);
 		}
-		if (allEaten)
+		dude.Draw(gfx);
+		if (isGameOver)
 		{
 			DrawGameOver(358, 268);
 		}
-
-		dude.Draw(gfx);
-
-		for (int i = 0; i < nPoo; ++i)
-		{
-			if (!poos[i].IsEaten())
-			{
-				poos[i].Draw(gfx);
-			}
-		}
+		meter.Draw(gfx);
 	}
 }

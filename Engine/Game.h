@@ -41,10 +41,10 @@ private:
 	MainWindow& wnd;
 	Graphics gfx;
 	/********************************/
-	int xPos = 100;
-	int yPos = 100;
-	int width = 100;
-	int height = 100;
 	/*  User Variables              */
+	int x0 = 100;
+	int y0 = 100;
+	int x1 = 200;
+	int y1 = 200;
 	/********************************/
 };

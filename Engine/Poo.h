@@ -6,7 +6,7 @@
 class Poo
 {
 public:
-	Poo(int in_x, int in_y, int in_vx, int in_vy);
+	void Init(int in_x, int in_y, int in_vx, int in_vy);
 	void Update();
 	void ProcessConsumprion(const Dude& dude);
 	void Draw(Graphics& gfx) const;
@@ -19,4 +19,5 @@ private:
 	static constexpr int width = 24;
 	static constexpr int height = 24;
 	bool isEaten = false;
+	bool initialized = false;
 };

@@ -9,7 +9,7 @@ Board::Board(Graphics& gfx)
 void Board::DrawCell(const Location& loc, Color c)
 {
 	assert(loc.x >= 0);
-	assert(loc.y < width);
+	assert(loc.x < width);
 	assert(loc.y >= 0);
 	assert(loc.y < height);
 	gfx.DrawRecDim(loc.x * dimension, loc.y * dimension, dimension, dimension, c);
@@ -23,4 +23,10 @@ int Board::GetGridWidth() const
 int Board::GetGridHeight() const
 {
 	return height;
+}
+
+bool Board::IsInsideBoard(const Location& loc) const
+{
+	return loc.x >= 0 && loc.x < width &&
+		loc.y >= 0 && loc.y < height;
 }

@@ -14,6 +14,7 @@ private:
 		void Follow(const Segment& next);
 		void MoveBy(const Location& delta_loc);
 		void Draw(Board& brd) const;
+		const Location& GetLocation() const;
 	private:
 		Location loc;
 		Color c;
@@ -21,8 +22,11 @@ private:
 public:
 	Snake(const Location& loc);
 	void MoveBy(const Location& delta_loc);
+	Location GetNextHeadLocation(const Location& delta_loc) const;
 	void Grow();
 	void Draw(Board& brd) const;
+	bool IsInTileExceptEnd(const Location& target) const;
+	bool IsInTile(const Location& target) const;
 
 private:
 	static constexpr Color headColor = Colors::Yellow;

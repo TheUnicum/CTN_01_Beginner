@@ -79,18 +79,17 @@ void Game::UpdateModel()
 				}
 				else
 				{
-					const bool eating = next == goal.GetLocation();
-					if (eating)
+					if (next == goal.GetLocation())
 					{
-						snek.Grow();
+						snek.GrowAndMoveBy(delta_loc);
+						goal.Respawn(rng, brd, snek);
 						sfxEat.Play(rng, 0.8f);
 					}
-					snek.MoveBy(delta_loc);
-					if (eating)
+					else
 					{
-						goal.Respawn(rng, brd, snek);
+						snek.MoveBy(delta_loc);
 					}
-					sfxSlither.Play(rng, 0.08f);
+					sfxSlither.Play(rng, 0.2f); //0.08
 				}
 			}
 			++snekSpeedupCounter;
@@ -106,7 +105,7 @@ void Game::UpdateModel()
 		if (wnd.kbd.KeyIsPressed(VK_RETURN))
 		{
 			gameIsStarted = true;
-			sndMusic.Play(1.0f, 0.1f); //0.6
+			sndMusic.Play(1.0f, 0.05f); //0.6
 		}
 	}
 }

@@ -31,6 +31,7 @@ Game::Game(MainWindow& wnd)
 	snek({ 2, 2 }),
 	goal(rng, brd, snek)
 {
+	sndTitle.Play(1.0f, 1.0f);
 }
 
 void Game::Go()
@@ -73,6 +74,8 @@ void Game::UpdateModel()
 					snek.IsInTileExceptEnd(next))
 				{
 					gameIsOver = true;
+					sndFart.Play();
+					sndMusic.StopAll();
 				}
 				else
 				{
@@ -80,12 +83,14 @@ void Game::UpdateModel()
 					if (eating)
 					{
 						snek.Grow();
+						sfxEat.Play(rng, 0.8f);
 					}
 					snek.MoveBy(delta_loc);
 					if (eating)
 					{
 						goal.Respawn(rng, brd, snek);
 					}
+					sfxSlither.Play(rng, 0.08f);
 				}
 			}
 			++snekSpeedupCounter;
@@ -98,7 +103,11 @@ void Game::UpdateModel()
 	}
 	else
 	{
-		gameIsStarted = wnd.kbd.KeyIsPressed(VK_RETURN);
+		if (wnd.kbd.KeyIsPressed(VK_RETURN))
+		{
+			gameIsStarted = true;
+			sndMusic.Play(1.0f, 0.1f); //0.6
+		}
 	}
 }
 

@@ -20,6 +20,7 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include <chrono>
 
 Game::Game( MainWindow& wnd )
 	:
@@ -42,4 +43,25 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
+    using std::chrono::steady_clock;
+    steady_clock::time_point start = steady_clock::now();
+    // using <auto> to determine itself the correct type
+    auto start1 = steady_clock::now();
+    for (int y = 0; y < Graphics::ScreenHeight; y++)
+    {
+        for (int x = 0; x < Graphics::ScreenWidth; x++)
+        {
+            gfx.PutPixel(x, y, Colors::Green);
+        }
+    }
+    steady_clock::time_point end = steady_clock::now();
+
+    std::chrono::duration<float> runtime = end - start;
+    float durationSecond = runtime.count();
+
+    // PS better conversion
+    std::chrono::time_point<std::chrono::steady_clock> m_StartTimepoint;
+    m_StartTimepoint = std::chrono::high_resolution_clock::now();
+    long long duration = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTimepoint).time_since_epoch().count();
+
 }

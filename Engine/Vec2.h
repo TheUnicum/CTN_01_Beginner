@@ -14,7 +14,7 @@ public:
 	float GetLenght() const;
 	float GetLenghtSq() const;
 	Vec2& Normalized();
-	Vec2 GetNormalized();
+	Vec2 GetNormalized() const;
 public:
 	float x;
 	float y;

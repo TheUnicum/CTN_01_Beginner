@@ -340,7 +340,7 @@ void Dude::ClampToScreen()
 	}
 	else if (bottom >= Graphics::ScreenHeight)
 	{
-		x = (Graphics::ScreenHeight - 1) - height;
+		y = (Graphics::ScreenHeight - 1) - height;
 	}
 }
 

@@ -7,7 +7,6 @@ Paddle::Paddle(const Vec2& pos_in, float halfWidth_in, float halfHeight_in)
 	halfHeight(halfHeight_in)
 {
 }
-
 void Paddle::Draw(Graphics& gfx) const
 {
 	RectF rect = GetRect();
@@ -16,7 +15,6 @@ void Paddle::Draw(Graphics& gfx) const
 	rect.right -= wingWidth;
 	gfx.DrawRec(rect, color);
 }
-
 bool Paddle::DoBallCollision(Ball& ball)
 {
 	if (!isCooldown)
@@ -28,8 +26,24 @@ bool Paddle::DoBallCollision(Ball& ball)
 			if (std::signbit(ball.GetVelocity().x) == std::signbit((ballPos - pos).x)
 				|| (ballPos.x > rect.left&& ballPos.x < rect.right))
 			{
+				Vec2 dir;
 				const float xDifference = ballPos.x - pos.x;
-				const Vec2 dir(xDifference * exitXFactor, -1.0f);
+				const float fixedXComponent = fixedZoneHalfWidth * exitXFactor;
+				if (std::abs(xDifference) < fixedZoneHalfWidth)
+				{
+					if (xDifference < 0.0f)
+					{
+						dir = Vec2(-fixedXComponent, -1.0f);
+					}
+					else
+					{
+						dir = Vec2(fixedXComponent, -1.0f);
+					}
+				}
+				else
+				{
+					dir = Vec2(xDifference * exitXFactor, -1.0f);
+				}
 				ball.SetDirection(dir);
 			}
 			else
@@ -42,7 +56,6 @@ bool Paddle::DoBallCollision(Ball& ball)
 	}
 	return false;
 }
-
 void Paddle::DoWallCollision(const RectF& walls)
 {
 	const RectF rect = GetRect();
@@ -55,7 +68,6 @@ void Paddle::DoWallCollision(const RectF& walls)
 		pos.x -= rect.right - walls.right;
 	}
 }
-
 void Paddle::Update(const Keyboard& kbd, float dt)
 {
 	if (kbd.KeyIsPressed(VK_LEFT))
@@ -67,12 +79,10 @@ void Paddle::Update(const Keyboard& kbd, float dt)
 		pos.x += speed * dt;
 	}
 }
-
 RectF Paddle::GetRect() const
 {
 	return RectF::FromCenter(pos, halfWidth, halfHeight);
 }
-
 void Paddle::ResetCooldown()
 {
 	isCooldown = false;

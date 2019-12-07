@@ -4,7 +4,10 @@ Paddle::Paddle(const Vec2& pos_in, float halfWidth_in, float halfHeight_in)
 	:
 	pos(pos_in),
 	halfWidth(halfWidth_in),
-	halfHeight(halfHeight_in)
+	halfHeight(halfHeight_in),
+	exitXFactor(maximumExitRatio / halfWidth),
+	fixedZoneHalfWidth(halfWidth* fixedZoneWidthRatio),
+	fixedZoneExitX(fixedZoneHalfWidth* exitXFactor)
 {
 }
 void Paddle::Draw(Graphics& gfx) const

@@ -27,7 +27,7 @@ bool RectF::IsOverlappingWith(const RectF& other) const
 		&& bottom > other.top && top < other.bottom;
 }
 
-bool RectF::IsContained(const RectF& other) const
+bool RectF::IsContainedBy(const RectF& other) const
 {
 	return left >= other.left && right <= other.right &&
 		top >= other.top && bottom <= other.bottom;

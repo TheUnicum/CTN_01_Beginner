@@ -11,8 +11,8 @@ public:
 	Vei2& operator*=(int rhs);
 	Vei2 operator-(const Vei2& rhs) const;
 	Vei2& operator-=(const Vei2& rhs);
-	Vei2 operator/(const Vei2& rhs) const;
-	Vei2& operator/=(const Vei2& rhs);
+	Vei2 operator/(const int rhs) const;
+	Vei2& operator/=(const int rhs);
 	float GetLength() const;
 	int GetLengthSq() const;
 public:

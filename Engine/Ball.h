@@ -8,9 +8,9 @@ class Ball
 public:
 	enum class WallCollisionResult
 	{
-		NoCollision,
-		WallCollision,
-		BottonCollision
+		None,
+		SideTop,
+		Botton
 	};
 	Ball() = default;
 	Ball(const Vec2& pos_in, const Vec2& dir_in);

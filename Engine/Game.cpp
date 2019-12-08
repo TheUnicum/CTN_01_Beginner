@@ -114,7 +114,7 @@ void Game::UpdateModel(float dt)
             }
 
             const Ball::WallCollisionResult ballWallColResult = ball.DoWallCollision(walls.GetInnerBounds());
-            if (ballWallColResult == Ball::WallCollisionResult::WallCollision)
+            if (ballWallColResult == Ball::WallCollisionResult::SideTop)
             {
                 // only reset cooldown if not still coliding with ball
                 // (helps prevent weird shit when ball is trapped against wall)
@@ -124,7 +124,7 @@ void Game::UpdateModel(float dt)
                 }
                 soundPad.Play();
             }
-            else if (ballWallColResult == Ball::WallCollisionResult::BottonCollision)
+            else if (ballWallColResult == Ball::WallCollisionResult::Botton)
             {
                 StartRound();
                 ResetBall();

@@ -115,7 +115,7 @@ void MemeField::Tile::SetNeighborMemeCount(int memeCount)
 	assert(nNeighborMemes == -1);
 	nNeighborMemes = memeCount;
 }
-
+ 
 MemeField::MemeField(const Vei2& center, int nMemes)
 	: 
 	topLeft(center - Vei2(width * SpriteCodex::tileSize, height * SpriteCodex::tileSize) / 2)
@@ -178,6 +178,7 @@ void MemeField::OnRevealClick(const Vei2& screenPos)
 			if (tile.HasMeme())
 			{
 				isFucked = true;
+				sndLose.Play();
 			}
 		}
 	}
@@ -216,8 +217,8 @@ int MemeField::CountNeighborMemes(const Vei2& gridPos)
 {
 	const int xStart = std::max<int>(0, gridPos.x - 1);
 	const int yStart = std::max<int>(0, gridPos.y - 1);
-	const int xEnd = std::min<int>(width, gridPos.x + 1);
-	const int yEnd = std::min<int>(height, gridPos.y + 1);
+	const int xEnd = std::min<int>(width - 1, gridPos.x + 1);
+	const int yEnd = std::min<int>(height - 1, gridPos.y + 1);
 
 	int count = 0;
 	for (Vei2 gridPos = { xStart , yStart }; gridPos.y <= yEnd; gridPos.y++)
@@ -230,5 +231,24 @@ int MemeField::CountNeighborMemes(const Vei2& gridPos)
 			}
 		}
 	}
+
 	return count;
+}
+
+bool MemeField::GameIsWon() const
+{
+	for (const Tile& t : field)
+	{
+		if (t.HasMeme() && !t.IsFlagged() ||
+			(!t.HasMeme() && !t.IsReveald()))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool MemeField::GameIsLost() const
+{
+	return isFucked;
 }

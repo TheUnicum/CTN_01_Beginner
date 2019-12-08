@@ -23,6 +23,7 @@
 #include <wrl.h>
 #include "ChiliException.h"
 #include "Colors.h"
+#include "RectI.h"
 #include "RectF.h"
 
 class Graphics
@@ -61,6 +62,10 @@ public:
 	void DrawRecDim(int x0, int y0, int width, int height, Color c)
 	{
 		DrawRect(x0, y0, x0 + width, y0 + height, c);
+	}
+	void DrawRect(const RectI& rect, Color c)
+	{
+		DrawRect(rect.left, rect.top, rect.right, rect.bottom, c);
 	}
 	void DrawRect(const RectF& rect, Color c)
 	{

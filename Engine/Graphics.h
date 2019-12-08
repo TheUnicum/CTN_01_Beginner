@@ -23,6 +23,7 @@
 #include <wrl.h>
 #include "ChiliException.h"
 #include "Colors.h"
+#include "RectF.h"
 
 class Graphics
 {
@@ -56,10 +57,14 @@ public:
 		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
 	}
 	void PutPixel( int x,int y,Color c );
-	void DrawRec(int x0, int y0, int x1, int y1, Color c);
+	void DrawRect(int x0, int y0, int x1, int y1, Color c);
 	void DrawRecDim(int x0, int y0, int width, int height, Color c)
 	{
-		DrawRec(x0, y0, x0 + width, y0 + height, c);
+		DrawRect(x0, y0, x0 + width, y0 + height, c);
+	}
+	void DrawRect(const RectF& rect, Color c)
+	{
+		DrawRect(int(rect.left), int(rect.top), int(rect.right), int(rect.bottom), c);
 	}
 	void DrawCircle(int x, int y, int radius, Color c);
 	~Graphics();

@@ -42,6 +42,7 @@ private:
 	void UpdateModel(float dt);
 	/********************************/
 	/*  User Functions              */
+    void StartRound();
 	/********************************/
 private:
 	MainWindow& wnd;
@@ -59,6 +60,7 @@ private:
     static constexpr float fieldHeight = float(Graphics::ScreenHeight) - wallThickness * 2.0f;
     static constexpr Color brickColors[4] = { {230,0,0},{ 0,230,0 },{ 0,0,230 },{ 0,230,230 } };
     static constexpr Color wallColor = { 20,60,200 };
+    static constexpr float readyWaitTime = 4.3f;
     // 0:not started 1:playing 2:gameover (yeah, I know what enum is, smartass ;/)
     int gameState = 0;
     FrameTimer ft;
@@ -67,8 +69,10 @@ private:
     Paddle pad;
     Walls walls;
     //bool gameIsOver = false;
+    float curWaitTime;
     Sound soundPad;
     Sound soundBrick;
     Sound soundFart;
+    Sound soundReady;
 	/********************************/
 };

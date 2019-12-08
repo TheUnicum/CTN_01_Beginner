@@ -67,83 +67,85 @@ void Game::Go()
 
 void Game::UpdateModel(float dt)
 {
-    if (gameState == 1)
+    switch (gameState)
     {
-        pad.Update(wnd.kbd, dt);
-        pad.DoWallCollision(walls.GetInnerBounds());
-
-        ball.Update(dt);
-
-        bool collisionHappened = false;
-        float curColDistSq;
-        int curColIndex;
-        for (int i = 0; i < nBricks; i++)
+    case State::Playing:
         {
-            if (bricks[i].CheckBallCollision(ball))
+            pad.Update(wnd.kbd, dt);
+            pad.DoWallCollision(walls.GetInnerBounds());
+
+            ball.Update(dt);
+
+            bool collisionHappened = false;
+            float curColDistSq;
+            int curColIndex;
+            for (int i = 0; i < nBricks; i++)
             {
-                const float newColDistSq = (ball.GetPosition() - bricks[i].GetCenter()).GetLengthSq();
-                if (collisionHappened)
+                if (bricks[i].CheckBallCollision(ball))
                 {
-                    if (newColDistSq < curColDistSq)
+                    const float newColDistSq = (ball.GetPosition() - bricks[i].GetCenter()).GetLengthSq();
+                    if (collisionHappened)
+                    {
+                        if (newColDistSq < curColDistSq)
+                        {
+                            curColDistSq = newColDistSq;
+                            curColIndex = i;
+                        }
+                    }
+                    else
                     {
                         curColDistSq = newColDistSq;
                         curColIndex = i;
+                        collisionHappened = true;
                     }
                 }
-                else
-                {
-                    curColDistSq = newColDistSq;
-                    curColIndex = i;
-                    collisionHappened = true;
-                }
             }
-        }
 
-        if (collisionHappened)
-        {
-            pad.ResetCooldown();
-            bricks[curColIndex].ExecuteBallCollision(ball);
-            soundBrick.Play();
-        }
-
-        if (pad.DoBallCollision(ball))
-        {
-            soundPad.Play();
-        }
-
-        const Ball::WallCollisionResult ballWallColResult = ball.DoWallCollision(walls.GetInnerBounds());
-        if (ballWallColResult == Ball::WallCollisionResult::WallCollision)
-        {
-            // only reset cooldown if not still coliding with ball
-            // (helps prevent weird shit when ball is trapped against wall)
-            if (!pad.GetRect().IsOverlappingWith(ball.GetRect()))
+            if (collisionHappened)
             {
                 pad.ResetCooldown();
+                bricks[curColIndex].ExecuteBallCollision(ball);
+                soundBrick.Play();
             }
-            soundPad.Play();
+
+            if (pad.DoBallCollision(ball))
+            {
+                soundPad.Play();
+            }
+
+            const Ball::WallCollisionResult ballWallColResult = ball.DoWallCollision(walls.GetInnerBounds());
+            if (ballWallColResult == Ball::WallCollisionResult::WallCollision)
+            {
+                // only reset cooldown if not still coliding with ball
+                // (helps prevent weird shit when ball is trapped against wall)
+                if (!pad.GetRect().IsOverlappingWith(ball.GetRect()))
+                {
+                    pad.ResetCooldown();
+                }
+                soundPad.Play();
+            }
+            else if (ballWallColResult == Ball::WallCollisionResult::BottonCollision)
+            {
+                StartRound();
+                ResetBall();
+                soundFart.Play();
+            }
         }
-        else if (ballWallColResult == Ball::WallCollisionResult::BottonCollision)
-        {
-            StartRound();
-            ResetBall();
-            soundFart.Play();
-        }
-    }
-    else if(gameState == 0)
-    {
+        break;
+    case State::NotStarted:
         // wait on title screen until enter is pressed
         if (wnd.kbd.KeyIsPressed(VK_RETURN))
         {
             StartRound();
         }
-    }
-    else if (gameState == 3)
-    {
+        break;
+    case State::ReadyWait:
         // check to see if ready wait period is over
         if ((curWaitTime += dt) > readyWaitTime)
         {
-            gameState = 1;
+            gameState = State::Playing;
         }
+        break;
     }
 }
 
@@ -154,11 +156,11 @@ void Game::StartRound()
     {
         curWaitTime = 0.0f;
         soundReady.Play();
-        gameState = 3;
+        gameState = State::ReadyWait;
     }
     else
     {
-        gameState = 2;
+        gameState = State::GameOver;
     }
 }
 
@@ -169,36 +171,32 @@ void Game::ResetBall()
 
 void Game::ComposeFrame()
 {
-    // draw pad and life if playing or waiting
-    if (gameState == 1 || gameState == 3)
+    switch (gameState)
     {
+    case Game::State::NotStarted:
+        SpriteCodex::DrawTitle(Graphics::GetScreenRect().GetCenter(), gfx);
+        break;
+    case Game::State::ReadyWait:
         pad.Draw(gfx);
         lifeCounter.Draw(gfx);
-    }
-    // draw ball only if playing
-    if (gameState == 1)
-    {
+        SpriteCodex::DrawReady(Graphics::GetScreenRect().GetCenter(), gfx);
+        break;
+    case Game::State::Playing:
+        pad.Draw(gfx);
+        lifeCounter.Draw(gfx);
         ball.Draw(gfx);
+        break;
+    case Game::State::GameOver:
+        SpriteCodex::DrawGameOver(Graphics::GetScreenRect().GetCenter(), gfx);
+        break;
     }
     // draw briks and wall always, except for the title sceen
-    if (gameState != 0)
+    if (gameState != Game::State::NotStarted)
     {
         for (const Brick& b : bricks)
         {
             b.Draw(gfx);
         }
         walls.Draw(gfx);
-    }
-    if (gameState == 0)
-    {
-        SpriteCodex::DrawTitle(Graphics::GetScreenRect().GetCenter(), gfx);
-    }
-    else if (gameState == 2)
-    {
-        SpriteCodex::DrawGameOver(Graphics::GetScreenRect().GetCenter(), gfx);
-    }
-    else if (gameState == 3)
-    {
-        SpriteCodex::DrawReady(Graphics::GetScreenRect().GetCenter(), gfx);
     }
 }

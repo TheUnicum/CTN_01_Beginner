@@ -33,6 +33,14 @@
 
 class Game
 {
+private:
+    enum class State
+    {
+        NotStarted,
+        ReadyWait,
+        Playing,
+        GameOver
+    };
 public:
 	Game( class MainWindow& wnd );
 	Game( const Game& ) = delete;
@@ -63,8 +71,7 @@ private:
     static constexpr Color brickColors[4] = { {230,0,0},{ 0,230,0 },{ 0,0,230 },{ 0,230,230 } };
     static constexpr Color wallColor = { 20,60,200 };
     static constexpr float readyWaitTime = 4.3f;
-    // 0:not started 1:playing 2:gameover (yeah, I know what enum is, smartass ;/)
-    int gameState = 0;
+    State gameState = State::NotStarted;
     FrameTimer ft;
     Ball ball;
     Brick bricks[nBricks];
